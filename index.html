@@ -8,12 +8,16 @@
 
 		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery.daterangepicker.js"></script>
 		<script type="text/javascript">
 			$(function(){
 
 				// Datepicker
+                $('#daterangepicker').daterangepicker({
+                    dateFormat: 'd/m/yy'
+                });
 				$('#datepicker').datepicker({
-					inline: true
+                    dateFormat: 'd/m/yy'
 				});
 			});
 		</script>
@@ -22,7 +26,11 @@
 	<h1>Welcome to jQuery UI!</h1>
 		<!-- Datepicker -->
 		<h2 class="demoHeaders">Datepicker</h2>
-		<div id="datepicker"></div>
+		<input type="text" id="daterangepicker" />
+        <div id="rangepicker">
+            Coucou
+        </div>
+        <div id="datepicker"></div>
 	</body>
 </html>
 
