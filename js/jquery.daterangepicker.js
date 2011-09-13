@@ -9,9 +9,9 @@ jQuery.fn.daterangepicker = function(settings) {
             {text: 'Compare the two last weeks', ranges:[{s:'today-7days', e:'today'}, {s:'today-15days', e: 'today-8days'}]}
         ],
         presets: {
-            singleDate: {title: 'Specific date', n: 0},
-            singleRange: {title: 'Date range', n: 1, labels: ['Start date', 'End date']},
-            twoRanges: {title: 'Compare ranges', n: 2, labels: [['DS1', 'DE1'], ['DS2', 'DE2']]}
+            singleDate: {title: 'Specific date'},
+            singleRange: {title: 'Date range', labels: ['Start date', 'End date']},
+            twoRanges: {title: 'Compare ranges', labels: [['DS1', 'DE1'], ['DS2', 'DE2']]}
         },
         doneButtonText: 'Done',
         rangeSplitter: '-',
@@ -84,6 +84,13 @@ jQuery.fn.daterangepicker = function(settings) {
             return false;
         });
 
+    jQuery.fn.appendDatepicker = function(title, rel) {
+        var picker = jQuery('<div class="ui-daterangepicker-datepicker" rel="' + rel + '"><span>' + title + '</span></div>');
+        picker.datepicker(options.datepickerOptions);
+        $(this).append(picker);
+
+        return $(this);
+    };
     jQuery.fn.clickActions = function(rp, rpPickersBoxes, doneBtn) {
         if($(this).data('ranges')) {
             var r = $(this).data('ranges'), t = [];
@@ -95,8 +102,31 @@ jQuery.fn.daterangepicker = function(settings) {
             input.val(t.join(options.rangeSeparator));
         }
         else {
-            console.debug($(this).data('presetSettings'));
+            rpPickersBoxes.find('.ui-daterangepicker-datepicker').remove();
+            var settings = $(this).data('presetSettings');
+            var l = (settings.labels) ? settings.labels : settings.title;
+
+            if(typeof(l) == 'string') {
+                rpPickersBoxes.appendDatepicker(l, '');
+            }
+            else if(typeof(l) == 'object') {
+                jQuery.each(l, function(k, v) {
+                    if(typeof(v) == 'string') {
+                        var rel = (k) ? 'e' : 's';
+                        rpPickersBoxes.appendDatepicker(v, rel);
+                    }
+                    else {
+                        jQuery.each(v, function(n, t) {
+                            var rel = (n) ? k + 'e' : k + 's';
+                            rpPickersBoxes.appendDatepicker(t, rel);
+                        });
+                    }
+                });
+            }
+            rpPickersBoxes.show();
         }
+
+        return $(this);
     };
 
     // Show, hide, or toggle rangepicker
