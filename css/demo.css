@@ -34,3 +34,20 @@ ul#icons span.ui-icon {
     float: left;
     margin: 0 4px;
 }
+
+.ui-daterangepicker {
+    display: none;
+    padding: 0.2em 0.2em 0;
+    width: 18em;
+}
+
+.ui-daterangepicker ul {
+    margin: 0px;
+    padding: 0px 0px 10px;
+}
+.ui-daterangepicker li {
+    cursor: pointer;
+    list-style: none outside none;
+    margin: 4px 0px;
+    padding: 4px;
+}
