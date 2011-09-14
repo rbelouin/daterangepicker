@@ -100,6 +100,7 @@ jQuery.fn.daterangepicker = function(settings) {
                 t.push(s + options.rangeSplitter + e);
             }
             input.val(t.join(options.rangeSeparator));
+
         }
         else {
             rpPickersBoxes.find('.ui-daterangepicker-datepicker').remove();
@@ -141,6 +142,8 @@ jQuery.fn.daterangepicker = function(settings) {
         if(rp.data('state') == 'open') {
             rp.data('state', 'closed');
             rp.fadeOut(300);
+            rpPickersBoxes.fadeOut(300);
+            rp.find('.ui-state-active').removeClass('ui-state-active');
             options.onClose();
         }
     }

@@ -37,17 +37,27 @@ ul#icons span.ui-icon {
 
 .ui-daterangepicker {
     display: none;
+    left: 0;
     padding: 0.2em 0.2em 0;
-    width: 18em;
+    position: absolute;
+    top: 0;
 }
 
 .ui-daterangepicker ul {
     margin: 0px;
     padding: 0px 0px 10px;
+    width: 16em;
 }
 .ui-daterangepicker li {
     cursor: pointer;
     list-style: none outside none;
-    margin: 4px 0px;
+    margin: 0px;
     padding: 4px;
+}
+.ui-ranges {
+    padding: 0 5px 0 0;
+}
+.ui-daterangepicker-datepicker {
+    display: inline-block;
+    margin: 0 0 0 5px;
 }
