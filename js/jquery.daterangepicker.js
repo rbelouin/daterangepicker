@@ -30,9 +30,18 @@ jQuery.fn.daterangepicker = function(settings) {
     // Custom datepicker options
     var datepickerOptions = {
         onSelect: function() {
-            console.debug('Coucou');
+            var ranges = [];
+            rpPickersBoxes.find('.ui-range').each(function(i, e) {
+                var dates = [];
+                $(e).find('.ui-daterangepicker-datepicker').each(function(i, e) {
+                    dates.push(jQuery.datepicker.formatDate(options.dateFormat, $(e).datepicker('getDate')));
+                });
+                ranges.push(dates.join(options.rangeSplitter));
+            });
+            input.val(ranges.join(options.rangeSeparator));
         },
-        defaultDate: 0
+        defaultDate: 0,
+        dateFormat: options.dateFormat
     };
     options.datepickerOptions = (settings) ? jQuery.extend(datepickerOptions, settings.datepickerOptions) : datepickerOptions;
 
@@ -65,7 +74,7 @@ jQuery.fn.daterangepicker = function(settings) {
         return ul;
     })();
 	var rpPickersBoxes = jQuery('<div class="ui-ranges ui-widget-header ui-corner-all ui-helper-clearfix" style="display:none"></div>').appendTo(rp);
-    var doneBtn = jQuery('<button class="btonDone ui-state-default ui-corner-all">' + options.doneButtonText + '</button>');
+    var doneBtn = jQuery('<button class="ui-daterangepicker-doneBtn ui-state-default ui-corner-all">' + options.doneButtonText + '</button>');
 
      /////////////////////////////////////////
     // LET'S MANAGE DATERANGEPICKER EVENTS //
@@ -84,8 +93,8 @@ jQuery.fn.daterangepicker = function(settings) {
             return false;
         });
 
-    jQuery.fn.appendDatepicker = function(title, rel) {
-        var picker = jQuery('<div class="ui-daterangepicker-datepicker" rel="' + rel + '"><span>' + title + '</span></div>');
+    jQuery.fn.appendDatepicker = function(title) {
+        var picker = jQuery('<div class="ui-daterangepicker-datepicker"><span>' + title + '</span></div>');
         picker.datepicker(options.datepickerOptions);
         $(this).append(picker);
 
@@ -101,32 +110,31 @@ jQuery.fn.daterangepicker = function(settings) {
                 t.push(s + options.rangeSplitter + e);
             }
             input.val(t.join(options.rangeSeparator));
-
+            if(options.closeOnSelect) {
+                hide();
+            }
         }
         // PRESETS
         else {
-            rpPickersBoxes.find('.ui-daterangepicker-datepicker, br').remove();
+            rpPickersBoxes.empty();
             var settings = $(this).data('presetSettings');
             var l = (settings.labels) ? settings.labels : settings.title;
 
+            // Convert all types of labels in 2D-array labels
             if(typeof(l) == 'string') {
-                rpPickersBoxes.appendDatepicker(l, '');
+                l = [[l]];
             }
-            else if(typeof(l) == 'object') {
-                jQuery.each(l, function(k, v) {
-                    if(typeof(v) == 'string') {
-                        var rel = (k) ? 'e' : 's';
-                        rpPickersBoxes.appendDatepicker(v, rel);
-                    }
-                    else {
-                        jQuery.each(v, function(n, t) {
-                            var rel = (n) ? k + 'e' : k + 's';
-                            rpPickersBoxes.appendDatepicker(t, rel);
-                        });
-                        rpPickersBoxes.append('<br/>');
-                    }
+            else if(typeof(l) == 'object' && typeof(l[0]) == 'string') {
+                l = [l];
+            }
+
+            jQuery.each(l, function(k, v) {
+                var div = jQuery('<div class="ui-range"></div>').appendTo(rpPickersBoxes);
+                jQuery.each(v, function(i, title) {
+                    div.appendDatepicker(title);
                 });
-            }
+            });
+            rpPickersBoxes.append(doneBtn);
             rpPickersBoxes.show();
         }
 
