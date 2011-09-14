@@ -49,12 +49,12 @@ jQuery.fn.daterangepicker = function(settings) {
      /////////////////////////////////////
     // LET'S BUILD THE DATERANGEPICKER //
    /////////////////////////////////////
-    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" style="display:none"></div>');
+    var rp = jQuery('<div class="ui-daterangepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" style="display:none; left:' + options.posX + 'px; top:' + options.posY+ 'px"></div>');
     var rpPresets = (function() {
         var ul = jQuery('<ul></ul>').appendTo(rp);
         // PresetRanges
         jQuery.each(options.presetRanges, function() {
-            var li = jQuery('<li class="ui-daterangepicker-' + this.text.replace(/ /g, '') + ' ui-corner-all"><a href="#" rel="' + this.rel + '" title="' + this.text + '">' + this.text + '</a></li>').data('ranges', this.ranges);
+            var li = jQuery('<li class="ui-corner-all"><a href="#" rel="' + ((this.rel) ? this.rel : '') + '" title="' + this.text + '">' + this.text + '</a></li>').data('ranges', this.ranges);
             ul.append(li);
         });
         // Presets
@@ -92,6 +92,7 @@ jQuery.fn.daterangepicker = function(settings) {
         return $(this);
     };
     jQuery.fn.clickActions = function(rp, rpPickersBoxes, doneBtn) {
+        // PRESET RANGES
         if($(this).data('ranges')) {
             var r = $(this).data('ranges'), t = [];
             for(var i in r) {
@@ -102,8 +103,9 @@ jQuery.fn.daterangepicker = function(settings) {
             input.val(t.join(options.rangeSeparator));
 
         }
+        // PRESETS
         else {
-            rpPickersBoxes.find('.ui-daterangepicker-datepicker').remove();
+            rpPickersBoxes.find('.ui-daterangepicker-datepicker, br').remove();
             var settings = $(this).data('presetSettings');
             var l = (settings.labels) ? settings.labels : settings.title;
 
@@ -121,6 +123,7 @@ jQuery.fn.daterangepicker = function(settings) {
                             var rel = (n) ? k + 'e' : k + 's';
                             rpPickersBoxes.appendDatepicker(t, rel);
                         });
+                        rpPickersBoxes.append('<br/>');
                     }
                 });
             }
