@@ -4,9 +4,11 @@ jQuery.fn.daterangepicker = function(settings) {
     // Daterangepicker defaults
     var options = jQuery.extend({
         presetRanges: [
-            {text: 'Yesterday', ranges:[{s: 'today-1days', e: 'today-1days'}]},
-            {text: 'Last 7 days', ranges:[{s: 'today-7days', e: 'today'}]},
-            {text: 'Compare the two last weeks', ranges:[{s:'today-7days', e:'today'}, {s:'today-15days', e: 'today-8days'}]}
+            {text: 'Yesterday', ranges:[{s: 'today-1days', e: 'today-1days'}], rel: 'y'},
+            {text: 'Last 7 days', ranges:[{s: 'today-7days', e: 'today-1days'}], rel: '7'},
+            {text: 'Current month', ranges:[{s:Date.parse('today').moveToFirstDayOfMonth(), e:'today'}], rel: 'cm'},
+            {text: 'Last month', ranges:[{s:Date.parse('1 month ago').moveToFirstDayOfMonth(), e:Date.parse('1 month ago').moveToLastDayOfMonth()}], rel: 'lm'},
+            {text: 'Compare the two last weeks', ranges:[{s:'today-6days', e:'today'}, {s:'today-13days', e: 'today-7days'}], rel: 'cw'}
         ],
         presets: [
             {text: 'Specific date'},
@@ -21,9 +23,9 @@ jQuery.fn.daterangepicker = function(settings) {
         posX: input.offset().left,
         posY: input.offset().top + input.outerHeight(),
         appendTo: 'body',
-        onClose: function(){},
-        onOpen: function(){},
-        onChange: function(){},
+        onClose: function(dateText, dateArray){},
+        onOpen: function(dateText, dateArray){},
+        onChange: function(dateText, dateArray){},
         datepickerOptions:  null
     }, settings);
 
@@ -39,6 +41,7 @@ jQuery.fn.daterangepicker = function(settings) {
                 ranges.push(dates.join(options.rangeSplitter));
             });
             input.val(ranges.join(options.rangeSeparator));
+            options.onChange(input.val(), jQuery.fn.daterangepicker.parse(input.val(), options.rangeSplitter, options.rangeSeparator));
         },
         defaultDate: 0,
         dateFormat: options.dateFormat
@@ -105,8 +108,10 @@ jQuery.fn.daterangepicker = function(settings) {
         if($(this).data('ranges')) {
             var r = $(this).data('ranges'), t = [];
             for(var i in r) {
-                var s = jQuery.datepicker.formatDate(options.dateFormat, Date.parse(r[i].s));
-                var e = jQuery.datepicker.formatDate(options.dateFormat, Date.parse(r[i].e));
+                var s = (typeof(r[i].s) == 'string') ? Date.parse(r[i].s) : r[i].s;
+                var e = (typeof(r[i].e) == 'string') ? Date.parse(r[i].e) : r[i].e;
+                s = jQuery.datepicker.formatDate(options.dateFormat, s);
+                e = jQuery.datepicker.formatDate(options.dateFormat, e);
                 t.push(s + options.rangeSplitter + e);
             }
             input.val(t.join(options.rangeSeparator));
@@ -147,7 +152,7 @@ jQuery.fn.daterangepicker = function(settings) {
         if(rp.data('state') == 'closed') {
             rp.data('state', 'open');
             rp.fadeIn(300);
-            options.onOpen();
+            options.onOpen(input.val(), jQuery.fn.daterangepicker.parse(input.val(), options.rangeSplitter, options.rangeSeparator));
         }
     }
     function hide() {
@@ -156,7 +161,7 @@ jQuery.fn.daterangepicker = function(settings) {
             rp.fadeOut(300);
             rpPickersBoxes.fadeOut(300);
             rp.find('.ui-state-active').removeClass('ui-state-active');
-            options.onClose();
+            options.onClose(input.val(), jQuery.fn.daterangepicker.parse(input.val(), options.rangeSplitter, options.rangeSeparator));
         }
     }
     function toggle() {
@@ -170,4 +175,12 @@ jQuery.fn.daterangepicker = function(settings) {
         return false;
     });
     jQuery(options.appendTo).append(rp);
+};
+
+jQuery.fn.daterangepicker.parse = function(s, rangeSplitter, rangeSeparator) {
+    var a = s.split(rangeSeparator);
+    jQuery.each(a, function(i, e) {
+        a[i] = e.split(rangeSplitter);
+    });
+    return a;
 };
