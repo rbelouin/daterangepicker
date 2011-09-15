@@ -34,37 +34,3 @@ ul#icons span.ui-icon {
     float: left;
     margin: 0 4px;
 }
-
-.ui-daterangepicker {
-    display: none;
-    left: 0;
-    padding: 0 0.2em 0.2em 0.2em;
-    position: absolute;
-    top: 0;
-}
-
-.ui-daterangepicker ul {
-    margin: 0px;
-    padding: 0px 0px 10px;
-    width: 16em;
-}
-.ui-daterangepicker li {
-    border: 1px solid transparent;
-    cursor: pointer;
-    list-style: none outside none;
-    margin: 0px;
-    padding: 4px;
-}
-.ui-ranges {
-    padding: 0 5px 10px 0;
-}
-.ui-daterangepicker-datepicker {
-    display: inline-block;
-    margin: 0 0 0 5px;
-}
-.ui-daterangepicker-doneBtn {
-    bottom: 5px;
-    cursor: pointer;
-    position: absolute;
-    right: 8px;
-}
