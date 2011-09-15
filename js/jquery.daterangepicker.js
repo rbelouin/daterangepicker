@@ -8,11 +8,11 @@ jQuery.fn.daterangepicker = function(settings) {
             {text: 'Last 7 days', ranges:[{s: 'today-7days', e: 'today'}]},
             {text: 'Compare the two last weeks', ranges:[{s:'today-7days', e:'today'}, {s:'today-15days', e: 'today-8days'}]}
         ],
-        presets: {
-            singleDate: {title: 'Specific date'},
-            singleRange: {title: 'Date range', labels: ['Start date', 'End date']},
-            twoRanges: {title: 'Compare ranges', labels: [['DS1', 'DE1'], ['DS2', 'DE2']]}
-        },
+        presets: [
+            {text: 'Specific date'},
+            {text: 'Date range', labels: ['Start date', 'End date']},
+            {text: 'Compare ranges', labels: [['DS1', 'DE1'], ['DS2', 'DE2']]}
+        ],
         doneButtonText: 'Done',
         rangeSplitter: '-',
         rangeSeparator: '|',
@@ -68,7 +68,7 @@ jQuery.fn.daterangepicker = function(settings) {
         });
         // Presets
         jQuery.each(options.presets, function() {
-            var li = jQuery('<li class="ui-corner-all"><a href="#" rel="' + this.rel + '" title="' + this.title + '">' + this.title + '</a></li>').data('presetSettings', this);
+            var li = jQuery('<li class="ui-corner-all"><a href="#" rel="' + ((this.rel) ? this.rel : '') + '" title="' + this.text + '">' + this.text + '</a></li>').data('presetSettings', this);
             ul.append(li);
         });
         return ul;
@@ -93,8 +93,8 @@ jQuery.fn.daterangepicker = function(settings) {
             return false;
         });
 
-    jQuery.fn.appendDatepicker = function(title) {
-        var picker = jQuery('<div class="ui-daterangepicker-datepicker"><span>' + title + '</span></div>');
+    jQuery.fn.appendDatepicker = function(label) {
+        var picker = jQuery('<div class="ui-daterangepicker-datepicker"><span>' + label + '</span></div>');
         picker.datepicker(options.datepickerOptions);
         $(this).append(picker);
 
@@ -118,7 +118,7 @@ jQuery.fn.daterangepicker = function(settings) {
         else {
             rpPickersBoxes.empty();
             var settings = $(this).data('presetSettings');
-            var l = (settings.labels) ? settings.labels : settings.title;
+            var l = (settings.labels) ? settings.labels : settings.text;
 
             // Convert all types of labels in 2D-array labels
             if(typeof(l) == 'string') {
@@ -130,8 +130,8 @@ jQuery.fn.daterangepicker = function(settings) {
 
             jQuery.each(l, function(k, v) {
                 var div = jQuery('<div class="ui-range"></div>').appendTo(rpPickersBoxes);
-                jQuery.each(v, function(i, title) {
-                    div.appendDatepicker(title);
+                jQuery.each(v, function(i, label) {
+                    div.appendDatepicker(label);
                 });
             });
             doneBtn.click(hide);
