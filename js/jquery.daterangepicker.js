@@ -23,7 +23,7 @@ jQuery.fn.daterangepicker = function(settings) {
         posX: input.offset().left,
         posY: input.offset().top + input.outerHeight(),
         appendTo: 'body',
-        onClose: function(dateText, dateArray){},
+        onClose: function(dateText, dateArray, rel){},
         onOpen: function(dateText, dateArray){},
         onChange: function(dateText, dateArray){},
         datepickerOptions:  null
@@ -160,8 +160,9 @@ jQuery.fn.daterangepicker = function(settings) {
             rp.data('state', 'closed');
             rp.fadeOut(300);
             rpPickersBoxes.fadeOut(300);
-            rp.find('.ui-state-active').removeClass('ui-state-active');
-            options.onClose(input.val(), jQuery.fn.daterangepicker.parse(input.val(), options.rangeSplitter, options.rangeSeparator));
+
+            var rel = rp.find('.ui-state-active').remove('ui-state-active').find('a').attr('rel');
+            options.onClose(input.val(), jQuery.fn.daterangepicker.parse(input.val(), options.rangeSplitter, options.rangeSeparator), rel);
         }
     }
     function toggle() {
