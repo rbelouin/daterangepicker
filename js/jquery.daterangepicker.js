@@ -134,6 +134,7 @@ jQuery.fn.daterangepicker = function(settings) {
                     div.appendDatepicker(title);
                 });
             });
+            doneBtn.click(hide);
             rpPickersBoxes.append(doneBtn);
             rpPickersBoxes.show();
         }
