@@ -9,7 +9,7 @@
 .ui-daterangepicker ul {
     margin: 0px;
     padding: 0px 0px 10px;
-    width: 16em;
+    min-width: 16em;
 }
 .ui-daterangepicker li {
     border: 1px solid transparent;
@@ -17,6 +17,9 @@
     list-style: none outside none;
     margin: 0px;
     padding: 4px;
+}
+.ui-daterangepicker li span {
+    float: right;
 }
 .ui-ranges {
     padding: 0 5px 10px 0;

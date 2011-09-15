@@ -68,7 +68,7 @@ jQuery.fn.daterangepicker = function(settings) {
         });
         // Presets
         jQuery.each(options.presets, function() {
-            var li = jQuery('<li class="ui-corner-all"><a href="#" rel="' + ((this.rel) ? this.rel : '') + '" title="' + this.text + '">' + this.text + '</a></li>').data('presetSettings', this);
+            var li = jQuery('<li class="ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#" rel="' + ((this.rel) ? this.rel : '') + '" title="' + this.text + '">' + this.text + '</a></li>').data('presetSettings', this);
             ul.append(li);
         });
         return ul;
